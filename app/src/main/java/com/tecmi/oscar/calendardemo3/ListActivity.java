@@ -8,16 +8,18 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ListActivity extends AppCompatActivity implements View.OnLongClickListener{
+public class ListActivity extends AppCompatActivity /*implements View.OnLongClickListener*/{
 
+    /*
     private ListView listView;
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayAdapter<String> arrayAdapter;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        /*
         listView = (ListView) findViewById(R.id.lstvEvents);
         listView.setOnLongClickListener(this);
 
@@ -29,10 +31,10 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
         //No se si vayan a servir
         day = bundle.getInt("day");
         month = bundle.getInt("month");
-        year = bundle.getInt("year");
+        year = bundle.getInt("year");*/
     }
 
-    @Override
+    /*@Override
     public boolean onLongClick(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         CharSequence[]items = new CharSequence[2];
@@ -52,5 +54,5 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
         dialog.show();
 
         return false;
-    }
+    }*/
 }
