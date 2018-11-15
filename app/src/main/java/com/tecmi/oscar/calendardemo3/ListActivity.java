@@ -32,7 +32,8 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
             CalendarContract.Calendars._ID,                           // 0
             CalendarContract.Calendars.ACCOUNT_NAME,                  // 1
             CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,         // 2
-            CalendarContract.Calendars.OWNER_ACCOUNT                  // 3
+            CalendarContract.Calendars.OWNER_ACCOUNT,                  // 3
+
     };
 
     // The indices for the projection array above.
@@ -42,19 +43,14 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
     private static final int PROJECTION_OWNER_ACCOUNT_INDEX = 3;
 
 
-    /*
-    public static final String[] EVENT_PROJECTION = new String[] {
-            CalendarContract.Events._ID,                           // 0
-    };
 
-    // The indices for the projection array above.
-    private static final int PROJECTION_ID_INDEX = 0;
-    */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        TextView tvToday = (TextView)findViewById(R.id.tvToday);
 
         //Esto comprueba si la aplicción tiene permiso para leer el calendario
         try{
@@ -72,23 +68,41 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
                 ActivityCompat.requestPermissions(this, permissions, 1);
             }
 
-            
+
             // Run query
             Cursor cur = null;//El cursor alamcenara la lista de eventos
             ContentResolver cr = getContentResolver();//El content Resolver correra la consulta y obtendra la lista de eventos
             Uri uri = CalendarContract.Calendars.CONTENT_URI;
-            String selection = "((" + CalendarContract.Calendars.ACCOUNT_NAME + " = ?) AND ("
-                    + CalendarContract.Calendars.ACCOUNT_TYPE + " = ?) AND ("
-                    + CalendarContract.Calendars.OWNER_ACCOUNT + " = ?))";
-            String[] selectionArgs = new String[] {"sampleuser@gmail.com", "com.google",
-                    "sampleuser@gmail.com"};
+            String selection = "(" + CalendarContract.Events.OWNER_ACCOUNT +" = ?)";
+            String[] selectionArgs = new String[] {"usersample@gmail.com"};
             // Submit the query and get a Cursor object back.
             cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
 
 
+            // Use the cursor to step through the returned records
+            while (cur.moveToNext()) {
+                long calID = 0;
+                String displayName = null;
+                String accountName = null;
+                String ownerName = null;
+                String eventTitle = null;
+
+                // Get the field values
+                calID = cur.getLong(PROJECTION_ID_INDEX);
+                displayName = cur.getString(PROJECTION_DISPLAY_NAME_INDEX);
+                accountName = cur.getString(PROJECTION_ACCOUNT_NAME_INDEX);
+                ownerName = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX);
+
+
+                // Do something with the values...
+
+                tvToday.setText(String.valueOf(calID));
+            }
+
+
             //Estas lineas son solo para probar
-            TextView tvToday = (TextView)findViewById(R.id.tvToday);
-            tvToday.setText("ya sirve");
+            //TextView tvToday = (TextView)findViewById(R.id.tvToday);
+            //tvToday.setText("ya sirve");
             Log.d("SALIO BIEN", "Funciona");
 
 
