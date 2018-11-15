@@ -45,6 +45,7 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,14 +55,24 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
 
         //Esto comprueba si la aplicción tiene permiso para leer el calendario
         try{
-            ArrayList<String> arrPerm = new ArrayList<>();
+
+            //Este array de Strings permitira hacer consultas de eventos
+            String[] mProjection =
+                    {
+                            "_id",
+                            CalendarContract.Events.TITLE,
+                            CalendarContract.Events.EVENT_LOCATION,
+                            CalendarContract.Events.DTSTART,
+                            CalendarContract.Events.DTEND,
+                    };
+
+            ArrayList<String> arrPerm = new ArrayList<>();//Esta variable ayuda a añadir los permisos que no se hayan otorgado
+            //Este if coprueba si la aplicación posee permiso para leer el calendario.
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED){
                 arrPerm.add(Manifest.permission.READ_CALENDAR);
-
-                //return;
             }
 
-            //En caso de que la app no tenga permiso, le pregunta al usuario si le da ese permiso para leer el calendario
+            //En caso de que la app no tenga permiso de leer el calendario, le pregunta al usuario si le da ese permiso para leer el calendario
             if(!arrPerm.isEmpty()) {
                 String[] permissions = new String[arrPerm.size()];
                 permissions = arrPerm.toArray(permissions);
@@ -72,15 +83,22 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
             // Run query
             Cursor cur = null;//El cursor alamcenara la lista de eventos
             ContentResolver cr = getContentResolver();//El content Resolver correra la consulta y obtendra la lista de eventos
-            Uri uri = CalendarContract.Calendars.CONTENT_URI;
+            Uri uri = CalendarContract.Events.CONTENT_URI;
             String selection = "(" + CalendarContract.Events.OWNER_ACCOUNT +" = ?)";
             String[] selectionArgs = new String[] {"usersample@gmail.com"};
             // Submit the query and get a Cursor object back.
-            cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
+            cur = cr.query(uri, mProjection, selection, selectionArgs, null);
 
 
             // Use the cursor to step through the returned records
             while (cur.moveToNext()) {
+
+                String title = cur.getString(cur.getColumnIndex(CalendarContract.Events.TITLE));
+
+                tvToday.setText(title);
+
+
+                /*
                 long calID = 0;
                 String displayName = null;
                 String accountName = null;
@@ -95,8 +113,8 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
 
 
                 // Do something with the values...
-
-                tvToday.setText(String.valueOf(calID));
+                */
+                //tvToday.setText(String.valueOf(calID));
             }
 
 
