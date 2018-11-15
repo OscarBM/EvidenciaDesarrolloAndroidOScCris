@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -69,15 +70,20 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
                         } else if (which == 1){
                             //Actividad activity_list para ver eventos
 
+
+
                             Intent intent = new Intent(getApplication(), ListActivity.class);
+
+                            /*
                             Bundle bundle = new Bundle();
                             bundle.putInt("day", day);
                             bundle.putInt("month", month);
                             bundle.putInt("year", year);
 
-                            intent.putExtras(bundle);
+                            intent.putExtras(bundle);*/
                             startActivity(intent);
 
+                            Log.d("DEBUGOSCAR", "La pantalla si abre");
 
                         } else {
                             return;
