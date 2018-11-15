@@ -35,7 +35,7 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        
+        //hola
 
 
         Log.d("DEBUGOSCAR2", "Todo bien");
