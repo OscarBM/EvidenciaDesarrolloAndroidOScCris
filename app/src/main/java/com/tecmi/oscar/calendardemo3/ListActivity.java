@@ -63,7 +63,9 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
                             CalendarContract.Events.TITLE,
                             CalendarContract.Events.EVENT_LOCATION,
                             CalendarContract.Events.DTSTART,
+                            //CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                             CalendarContract.Events.DTEND,
+                            CalendarContract.Events.DESCRIPTION
                     };
 
             ArrayList<String> arrPerm = new ArrayList<>();//Esta variable ayuda a añadir los permisos que no se hayan otorgado
@@ -94,8 +96,11 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
             while (cur.moveToNext()) {
 
                 String title = cur.getString(cur.getColumnIndex(CalendarContract.Events.TITLE));
+                String description = cur.getString(cur.getColumnIndex(CalendarContract.Events.DESCRIPTION));
+                String sDate = cur.getString(cur.getColumnIndex(CalendarContract.Events.DTSTART));
+                //String sDate = cur.getString(cur.getColumnIndex(CalendarContract.EXTRA_EVENT_BEGIN_TIME));
 
-                tvToday.setText(title);
+                tvToday.setText(sDate);
 
 
                 /*
