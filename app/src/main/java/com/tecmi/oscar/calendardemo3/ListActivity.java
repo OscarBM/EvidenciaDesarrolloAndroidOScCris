@@ -24,28 +24,6 @@ import java.util.Calendar;
 
 public class ListActivity extends AppCompatActivity /*implements View.OnLongClickListener*/{
 
-
-
-    // Projection array. Creating indices for this array instead of doing
-    // dynamic lookups improves performance.
-    public static final String[] EVENT_PROJECTION = new String[] {
-            CalendarContract.Calendars._ID,                           // 0
-            CalendarContract.Calendars.ACCOUNT_NAME,                  // 1
-            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,         // 2
-            CalendarContract.Calendars.OWNER_ACCOUNT,                  // 3
-
-    };
-
-    // The indices for the projection array above.
-    private static final int PROJECTION_ID_INDEX = 0;
-    private static final int PROJECTION_ACCOUNT_NAME_INDEX = 1;
-    private static final int PROJECTION_DISPLAY_NAME_INDEX = 2;
-    private static final int PROJECTION_OWNER_ACCOUNT_INDEX = 3;
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +65,7 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
             ContentResolver cr = getContentResolver();//El content Resolver correra la consulta y obtendra la lista de eventos
             Uri uri = CalendarContract.Events.CONTENT_URI;
             String selection = "(" + CalendarContract.Events.OWNER_ACCOUNT +" = ?)";
-            String[] selectionArgs = new String[] {"usersample@gmail.com"};
+            String[] selectionArgs = new String[] {"oscarismaelbm98@gmail.com"};
             // Submit the query and get a Cursor object back.
             cur = cr.query(uri, mProjection, selection, selectionArgs, null);
 
@@ -98,28 +76,14 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
                 String title = cur.getString(cur.getColumnIndex(CalendarContract.Events.TITLE));
                 String description = cur.getString(cur.getColumnIndex(CalendarContract.Events.DESCRIPTION));
                 String sDate = cur.getString(cur.getColumnIndex(CalendarContract.Events.DTSTART));
+
+
                 //String sDate = cur.getString(cur.getColumnIndex(CalendarContract.EXTRA_EVENT_BEGIN_TIME));
 
-                tvToday.setText(sDate);
+                Log.d("FORMATO", "el bueno " + CalendarContract.Events.DTSTART);
+                tvToday.setText(description);
 
 
-                /*
-                long calID = 0;
-                String displayName = null;
-                String accountName = null;
-                String ownerName = null;
-                String eventTitle = null;
-
-                // Get the field values
-                calID = cur.getLong(PROJECTION_ID_INDEX);
-                displayName = cur.getString(PROJECTION_DISPLAY_NAME_INDEX);
-                accountName = cur.getString(PROJECTION_ACCOUNT_NAME_INDEX);
-                ownerName = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX);
-
-
-                // Do something with the values...
-                */
-                //tvToday.setText(String.valueOf(calID));
             }
 
 
@@ -148,72 +112,16 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
         //cursor = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
 
 
-        //createList(this);
+
 
         Log.d("DEBUGOSCAR2", "Todo bien 6"); //Solo es para comprobar si todo jala bien
 
-        /*
-        String[] mProjection =
-                {
-                        "_id",
-                        CalendarContract.Events.TITLE,
-                        CalendarContract.Events.EVENT_LOCATION,
-                        CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-                        CalendarContract.EXTRA_EVENT_END_TIME,
-                        CalendarContract.Events.DESCRIPTION
-                };
 
 
-        Uri uri = CalendarContract.Events.CONTENT_URI;
-        String selection = CalendarContract.Events.EVENT_LOCATION + " = ? ";
 
-        String[] selectionArgs = new String[]{"London"};
-        cur = cr.query(uri,mProjection, selection, selectionArgs, null);
-
-        while (cur.moveToNext()) {
-            String title = cur.getString(cur.getColumnIndex(CalendarContract.Events.TITLE));
-
-            TextView tvToday =  (TextView) findViewById(R.id.tvToday);
-            tvToday.setText(title);
-            //cont.addView(tvToday);
-        }*/
-
-        /*
-        listView = (ListView) findViewById(R.id.lstvEvents);
-        listView.setOnLongClickListener(this);
-
-        //NO se si vayan a servir
-        Bundle bundle = getIntent().getExtras();
-        int day, month, year;
-        day=month=year=0;
-
-        //No se si vayan a servir
-        day = bundle.getInt("day");
-        month = bundle.getInt("month");
-        year = bundle.getInt("year");*/
     }
 
 
 
-    /*@Override
-    public boolean onLongClick(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        CharSequence[]items = new CharSequence[2];
-        items[0]="Eliminar evento";
-        items[1]="Cancelar";
 
-        builder.setTitle("Eliminar evento")
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        if(i==0){
-
-                        }
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        return false;
-    }*/
 }
