@@ -73,7 +73,8 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
         Uri uri = CalendarContract.Events.CONTENT_URI;
         String selection = "(" + CalendarContract.Events.OWNER_ACCOUNT +" = ?)";
         //ESTA LINEA DE ABAJO ESTA PENDIENTE
-        String[] selectionArgs = new String[] {"oscarismaelbm98@gmail.com"};//Aqui se fija la cuenta de la cual se quieren revisar eventos.
+        String[] selectionArgs = new String[] {"usersample@gmail.com"};//Aqui se fija la cuenta de la cual se quieren revisar eventos.
+
         // El cursor almacenara la consulta hecha por el contentResolver
         //selecctionArgs vendrian siendo los filtros. Aqui se encuentra el correo del usuario
         cur = cr.query(uri, mProjection, selection, selectionArgs, null);

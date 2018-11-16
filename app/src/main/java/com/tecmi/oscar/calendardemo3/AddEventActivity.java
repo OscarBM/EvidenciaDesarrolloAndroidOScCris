@@ -18,7 +18,7 @@ import android.icu.util.Calendar;
 
 public class AddEventActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //Declarar EditTexts
+    //Declarar EditTexts. Estos almacenaran los datos del evento
     private EditText eventName, eventLocation, startDate, endDate, startHour, endHour;
     private EditText description;
 
@@ -30,7 +30,7 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
-        //asignar valores a los EditText
+        //asignar valores a los EditText. Aqui se almacenarán los datos del evento
         eventName = (EditText)findViewById(R.id.edtTitle);
         eventLocation = (EditText)findViewById(R.id.edtLocation);
         startDate = (EditText)findViewById(R.id.edtStartDate);
@@ -39,20 +39,19 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         endHour = (EditText)findViewById(R.id.edtEndHour);
         description = (EditText)findViewById(R.id.edtDescription);
 
+        //No estoy seguro si estas lineas al final se ocupen
         Bundle bundle = getIntent().getExtras();
         int day = 0, month = 0, year = 0;
         bundle.getInt("day");
         bundle.get("month");
         bundle.get("year");
-        //startDate.setText(day + "/" + month+"/" + year);
-        //endDate.setText(day + "/" + month+"/" + year);
 
 
-        //Asignar valores a los botones
+        //Asignar valores a los botones. Aqui se ligan las variables con sus respectivos botones en el archivo xml correspondiente a esta actividad
         btnAddEvent = (Button)findViewById(R.id.btnAddEvent);
         btnCancelEvent = (Button)findViewById(R.id.btnCancelEvent);
 
-        //Fijar los listener de los botones
+        //Fijar los listener de los botones. Esto permite que los botones puedan realizar acciones al ser presionados.
         btnAddEvent.setOnClickListener(this);
         btnCancelEvent.setOnClickListener(this);
 
@@ -60,69 +59,41 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == btnAddEvent.getId()){
-            //Se hizo que BDSQLite bd NO fuera abstracta. Tener en mente eso.
-            //Si hace falta cambiar eso ve a la declaración de clase de BDSQLite.java
-
-            /*BDSQLite bd = new BDSQLite(getApplication(), "schedule",null, 1);
-            SQLiteDatabase db = bd.getWritableDatabase();
-
-            String sql = "insert into events" +
-                    " (nameEvent, location, startDate, startHour, endDate, endHour, description) "+
-                    "values(" +
-                    eventName.getText()+", "+
-                    eventLocation.getText()+", "+
-                    startDate.getText()+", "+
-                    startHour.getText()+", "+
-                    endDate.getText()+", "+
-                    endHour.getText()+", "+
-                    description.getText()+", "+
-                    ")";*/
-
+        //Como hay más de un botón, el metodo OnCLick priemro revisara el id del botón que llamó a este metodo para realizar las acciones correspondientes
+        if(v.getId() == btnAddEvent.getId()){//Este if se ejecuta cuando el botón presionado fue el de agregar el evento a la agenda
             Calendar beginTime = Calendar.getInstance();
-            //beginTime.set(2018,10,7,8,30);
-            String startDate1[] = startDate.getText().toString().split("/");
-            String startHour1[] = startHour.getText().toString().split(":");
-            beginTime.set(Integer.parseInt(startDate1[2]),
-                    Integer.parseInt(startDate1[1])-1,
-                    Integer.parseInt(startDate1[0]),
-                    Integer.parseInt(startHour1[0]),
-                    Integer.parseInt(startHour1[1]));
+            String startDate1[] = startDate.getText().toString().split("/");//Aqui se hace un array de strings donde se almacenarán el dia, mes y año de la fecha de inicio del evento
+            String startHour1[] = startHour.getText().toString().split(":");//Aqui se hace un array de strings donde se almacenarán la hora y los minutos de la fecha de inicio del evento
+            beginTime.set(Integer.parseInt(startDate1[2]),//Aqui se fija el valor del año
+                    Integer.parseInt(startDate1[1])-1,//Aqui se fija el valor del mes
+                    Integer.parseInt(startDate1[0]),//Aqui se fija el valor del dia
+                    Integer.parseInt(startHour1[0]),//Aqui se fija el valor de la hora
+                    Integer.parseInt(startHour1[1]));//Aqui se fija el valor de los minutos
 
             Calendar endTime = Calendar.getInstance();
-            String endDate1[] = endDate.getText().toString().split("/");
-            String endHour1[] = endHour.getText().toString().split(":");
-            endTime.set(Integer.parseInt(endDate1[2]),
-                    Integer.parseInt(endDate1[1])-1,
-                    Integer.parseInt(endDate1[0]),
-                    Integer.parseInt(endHour1[0]),
-                    Integer.parseInt(endHour1[1]));
-            //Calendar endTime = Calendar.getInstance();
-            //endTime.set(2018, 10,7, 9, 30);
-            //endTime.set(2018, 10,7, 9, 30);
+            String endDate1[] = endDate.getText().toString().split("/");//Aqui se hace un array de strings donde se almacenarán el dia, mes y año de la fecha de termino del evento
+            String endHour1[] = endHour.getText().toString().split(":");//Aqui se hace un array de strings donde se almacenarán la hora y los minutos de la fecha de termino del evento
+            endTime.set(Integer.parseInt(endDate1[2]),//Aqui se fija el valor del año
+                    Integer.parseInt(endDate1[1])-1,//Aqui se fija el valor del mes
+                    Integer.parseInt(endDate1[0]),//Aqui se fija el valor del dia
+                    Integer.parseInt(endHour1[0]),//Aqui se fija el valor de la hora
+                    Integer.parseInt(endHour1[1]));//Aqui se fija el valor de los minutos
 
-            //PRUEBA INICIO
-
-
-            //PRUEBA FINAL
-
-
+            //Esta intent es para añadir el evento nuevo a la agenda
             Intent intent = new Intent(Intent.ACTION_INSERT)
                     .setData(CalendarContract.Events.CONTENT_URI)
-                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
-                    //.putExtra(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis())
-                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
-                    .putExtra(CalendarContract.Events.TITLE, eventName.getText().toString())
-                    .putExtra(CalendarContract.Events.DESCRIPTION, description.getText().toString())
-                    .putExtra(CalendarContract.Events.EVENT_LOCATION, eventLocation.getText().toString())
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())//Aqui se fija la fecha (con hora y minutos) de inicio del evento
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())//Aqui se fija la fecha (con hora y minutos) de termino del evento
+                    .putExtra(CalendarContract.Events.TITLE, eventName.getText().toString())//Aqui se fija el titulo del evento
+                    .putExtra(CalendarContract.Events.DESCRIPTION, description.getText().toString())//Aqui se fija la descripción del evento
+                    .putExtra(CalendarContract.Events.EVENT_LOCATION, eventLocation.getText().toString())//Aqui se fija la ubicación del evento
                     .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-                    //.putExtra(CalendarContract.Calendars.CALENDAR_COLOR, Color.GREEN);
-                    //.putExtra(Intent.EXTRA_EMAIL, "rowan@hotmail.com,trevor@hotmail.com");
-            startActivity(intent);
+                    //.putExtra(CalendarContract.Calendars.CALENDAR_COLOR, Color.GREEN); //Aqui se intento poder modificar el color del evento. PENDIENTE
+            startActivity(intent);//Aqui se ejecuta el intent para añadir el evento a la agenda
 
+            //Quizas este try-catch no sea necesario
             try{
-                //db.execSQL(sql);
-
+                //Una vez que el evento fue agregado a la agenda, se procedera a limpiar los textEdit.
                 eventName.setText("");
                 eventLocation.setText("");
                 startDate.setText("");
