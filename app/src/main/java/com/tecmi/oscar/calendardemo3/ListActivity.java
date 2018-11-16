@@ -137,7 +137,7 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
         //TextView tvToday = (TextView)findViewById(R.id.tvToday);
         //tvToday.setText("ya sirve");
         Log.d("SALIO BIEN", "Funciona");
-        
+
         //ESTO DE AQUI SI SIRVE
         /*
         Cursor cursor = null;

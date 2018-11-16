@@ -19,8 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 
-public class MainActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener{
-
+public class MainActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener {
     //Marvel: https://marvelapp.com/45cj4d9/screen/48608874
 
     //Lista de abreviaciones
@@ -30,34 +29,57 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
      -edt = EditText
      -tv = TextView
      */
+
     private CalendarView clvMain;
+    private Button btnList;//= (Button)findViewById(R.id.btnList);
+    private Button btnAddEvent;//= (Button)findViewById(R.id.btnAddEvent);
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         clvMain = (CalendarView)findViewById(R.id.clvMain);
         clvMain.setOnDateChangeListener(this);
+
+        try{
+            //btnList = (Button)findViewById(R.id.btnList);
+           // btnAddEvent = (Button)findViewById(R.id.btnAddEvent);
+            //btnList
+
+
+
+            //btnAddEvent
+
+        }catch (Exception e){
+            Log.d("SALIO MAL", e.getMessage());
+        }
+
     }
+
 
     //@Override
     public void onSelectedDayChange (CalendarView calendarView, int i, int i1, int i2){
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         CharSequence []items = new CharSequence[3];
         items[0] = "Agregar evento";
         items[1] = "Ver eventos tuyos";
         items[2] = "Cancelar";
 
+
         final int day, month, year;
         day = i;
         month = i1+1;
         year = i2;
 
+
         builder.setTitle("Selecciona una tarea")
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         if(which == 0){
                             //Actividad activity_add_event para añadir evento
                             Intent intent = new Intent(getApplication(), AddEventActivity.class);
@@ -66,13 +88,12 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
                             bundle.putInt("month", month);
                             bundle.putInt("year", year);
 
+
                             intent.putExtras(bundle);
                             startActivity(intent);
 
                         } else if (which == 1){
                             //Actividad activity_list para ver eventos
-
-
 
                             Intent intent = new Intent(getApplication(), ListActivity.class);
 
@@ -86,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
                             startActivity(intent);
 
                             Log.d("DEBUGOSCAR", "La pantalla si abre");
-
                         } else {
                             return;
                         }
@@ -99,7 +119,28 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
     }
 
 
+    public void onClickNewEvent(View v){
+        //Actividad activity_add_event para añadir evento
+        Intent intent = new Intent(getApplication(), AddEventActivity.class);
+        Bundle bundle = new Bundle();
 
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 
+    public void onClickListEvents(View v){
+        //Actividad activity_list para ver eventos
+
+        Intent intent = new Intent(getApplication(), ListActivity.class);
+
+                            /*
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("day", day);
+                            bundle.putInt("month", month);
+                            bundle.putInt("year", year);
+
+                            intent.putExtras(bundle);*/
+        startActivity(intent);
+    }
 
 }
