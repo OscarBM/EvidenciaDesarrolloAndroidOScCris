@@ -36,10 +36,10 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        TextView tvToday = (TextView)findViewById(R.id.tvToday);
-        ListView lstvEvents = (ListView)findViewById(R.id.lstvEvents);
+        //Se declaran variables
+        TextView tvToday = (TextView)findViewById(R.id.tvToday);//El textView que contendra la fecha actual. CAMBIOS PENDIENTES
+        ListView lstvEvents = (ListView)findViewById(R.id.lstvEvents);//El listView que contendra la lista de eventos
 
-        //Esto comprueba si la aplicción tiene permiso para leer el calendario
         //Este array de Strings permitira hacer consultas de eventos
         String[] mProjection =
                 {
@@ -47,60 +47,64 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
                         CalendarContract.Events.TITLE,
                         CalendarContract.Events.EVENT_LOCATION,
                         CalendarContract.Events.DTSTART,
-                        //CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                         CalendarContract.Events.DTEND,
                         CalendarContract.Events.DESCRIPTION
                 };
 
+        //Se declara una variable
         ArrayList<String> arrPerm = new ArrayList<>();//Esta variable ayuda a añadir los permisos que no se hayan otorgado
+
         //Este if coprueba si la aplicación posee permiso para leer el calendario.
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED){
-            arrPerm.add(Manifest.permission.READ_CALENDAR);
+            arrPerm.add(Manifest.permission.READ_CALENDAR);//Aqui se añade el permiso de leer calendario a una lista de permisos pendientes
         }
 
         //En caso de que la app no tenga permiso de leer el calendario, le pregunta al usuario si le da ese permiso para leer el calendario
-        if(!arrPerm.isEmpty()) {
+        if(!arrPerm.isEmpty()) {//Si la lista de permisos pendientes NO esta vacia, se ejecuta este if
             String[] permissions = new String[arrPerm.size()];
             permissions = arrPerm.toArray(permissions);
             ActivityCompat.requestPermissions(this, permissions, 1);
         }
 
 
-        // Run query
+        // Ejecutar consulta de eventos para el listView lstvEvents
         Cursor cur = null;//El cursor alamcenara la lista de eventos
         ContentResolver cr = getContentResolver();//El content Resolver correra la consulta y obtendra la lista de eventos
         Uri uri = CalendarContract.Events.CONTENT_URI;
         String selection = "(" + CalendarContract.Events.OWNER_ACCOUNT +" = ?)";
-        String[] selectionArgs = new String[] {"oscarismaelbm98@gmail.com"};
-        // Submit the query and get a Cursor object back.
+        //ESTA LINEA DE ABAJO ESTA PENDIENTE
+        String[] selectionArgs = new String[] {"oscarismaelbm98@gmail.com"};//Aqui se fija la cuenta de la cual se quieren revisar eventos.
+        // El cursor almacenara la consulta hecha por el contentResolver
+        //selecctionArgs vendrian siendo los filtros. Aqui se encuentra el correo del usuario
         cur = cr.query(uri, mProjection, selection, selectionArgs, null);
 
 
-        //PRUEBA
-        adapter = null;
-        Calendar cal = Calendar.getInstance();
-        String monthLetter="";
+        //Se declaran variables para ir construyendo la lista de eventos del listView lstvEvents
+        adapter = null;//El adapter ira almacenando los eventos para luego pasarle la lista a lstvEvents
+        Calendar cal = Calendar.getInstance();//El Calendar nos permitira extraer el dia, mes y año de la fecha de inicio
+        String monthLetter="";//Esta variable es para poder representar a los meses con abreviaciones (ej. Ene, Feb, Mar, etc.) en lugar de usar numeros
 
-        // Use the cursor to step through the returned records
+        // El cursor comienza a recorrer los eventos de la consulta de uno en uno para obtener sus datos
         while (cur.moveToNext()) {
 
-            String title = cur.getString(cur.getColumnIndex(CalendarContract.Events.TITLE));
-            String description = cur.getString(cur.getColumnIndex(CalendarContract.Events.DESCRIPTION));
-            String sDate = cur.getString(cur.getColumnIndex(CalendarContract.Events.DTSTART));
-            //String sDate = cur.getString(cur.getColumnIndex(CalendarContract.EXTRA_EVENT_BEGIN_TIME));
+            //Se extraen los datos del evento en turno
+            String title = cur.getString(cur.getColumnIndex(CalendarContract.Events.TITLE));//Se extrae el titulo del evento
+            String description = cur.getString(cur.getColumnIndex(CalendarContract.Events.DESCRIPTION));//Se extrae la descripción del evento
+            String sDate = cur.getString(cur.getColumnIndex(CalendarContract.Events.DTSTART));//Se extrae la fecha de inicio del evento.
+            //sDate sale en un tipo de String llamado timeStamp, el cual ocupa traducirse a una variable de tipo Date
 
-
-            //Se convierte el sDate a una variable de tipo fecha
+            //Se convierte el sDate a una variable de tipo fecha (Date)
+            //Revisar si metodo stringToDate realmente se ocupa o si esta de mas
             java.util.Date time=new java.util.Date((long) Long.parseLong(sDate));
-            //Date stDate = stringToDate(sDate, "EEE MMM d HH:mm:ss zz yyyy");
+
 
             //Extraer el dia, mes y año de la fecha de inicio
             cal.setTime(time);
             int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH)+1;
+            int month = cal.get(Calendar.MONTH)+1;//NOTA: Los meses comienzan en 0 (y no en 1), por ello se le suma 1 al resultado.
             int day = cal.get(Calendar.DAY_OF_MONTH);
 
-
+            //Aqui se traduce el mes de la fecha de inicio a su correspondiente abreviación
             switch(month){
                 case 1: monthLetter = "Ene"; break;
                 case 2: monthLetter = "Feb"; break;
@@ -116,29 +120,19 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
                 default: monthLetter = "Dec"; break;
             }
 
+            //El contenido de cada item del listView lstvEvents serán Strings que contengan la fecha de inicio, titulo y descripción del evento.
+            //Aqui se contruye el String que sera contenido de lstvEvents
             String itemContent = day+"-"+monthLetter+"  "+title + ": "+description;
-            //String sDate = cur.getString(cur.getColumnIndex(CalendarContract.EXTRA_EVENT_BEGIN_TIME));
 
-            //PRUEBA
+            //Aqui se añade el item al listView lstvEvents
             myStringArray1.add(itemContent);
             adapter = new ArrayAdapter<String>
-                    (this, android.R.layout.simple_list_item_1, myStringArray1);//CustomAdapter(getActivity(), R.layout.row, myStringArray1);
-
-            Log.d("FORMATO", "el bueno " + CalendarContract.Events.DTSTART);
-            tvToday.setText(sDate);
-
-
+                    (this, android.R.layout.simple_list_item_1, myStringArray1);
         }
-        //PRUEBA
+        //Aqui el adapter le pasa la lista de eventos completa a lstvEvents
         lstvEvents.setAdapter(adapter);
 
-
-        //Estas lineas son solo para probar
-        //TextView tvToday = (TextView)findViewById(R.id.tvToday);
-        //tvToday.setText("ya sirve");
-        Log.d("SALIO BIEN", "Funciona");
-
-        //ESTO DE AQUI SI SIRVE
+        //Estas lineas quizas no se ocupen
         /*
         Cursor cursor = null;
         ContentResolver cr = getContentResolver();
@@ -147,19 +141,9 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
 
         String[] selectionArgs = new String[] {"0"};
         */
-
-        //cursor = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
-
-
-
-
-        Log.d("DEBUGOSCAR2", "Todo bien 6"); //Solo es para comprobar si todo jala bien
-
-
-
-
     }
 
+    //Revisar si se ocupa o si esta demas este metodo
     private Date stringToDate(String aDate,String aFormat) {
 
         if(aDate==null) return null;

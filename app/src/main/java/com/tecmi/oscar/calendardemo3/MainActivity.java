@@ -30,117 +30,45 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
      -tv = TextView
      */
 
-    private CalendarView clvMain;
-    private Button btnList;//= (Button)findViewById(R.id.btnList);
-    private Button btnAddEvent;//= (Button)findViewById(R.id.btnAddEvent);
+    private CalendarView clvMain;//Se declara al calendari de la pantalla principal como variable
+    //tal vez estas variables ya no sirvan
+    private Button btnList;
+    private Button btnAddEvent;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Aqui se le da un valor al calendario de la pantalla principal y se le da la capacidad de poder hacer cosas al seleccionar cualquier dia
         clvMain = (CalendarView)findViewById(R.id.clvMain);
         clvMain.setOnDateChangeListener(this);
 
-        try{
-            //btnList = (Button)findViewById(R.id.btnList);
-           // btnAddEvent = (Button)findViewById(R.id.btnAddEvent);
-            //btnList
-
-
-
-            //btnAddEvent
-
-        }catch (Exception e){
-            Log.d("SALIO MAL", e.getMessage());
-        }
-
     }
 
 
+    //Metodo para que se ejecuten acciones si se presiona cualquier dia en el calendario clvMain
     //@Override
     public void onSelectedDayChange (CalendarView calendarView, int i, int i1, int i2){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        CharSequence []items = new CharSequence[3];
-        items[0] = "Agregar evento";
-        items[1] = "Ver eventos tuyos";
-        items[2] = "Cancelar";
-
-
-        final int day, month, year;
-        day = i;
-        month = i1+1;
-        year = i2;
-
-
-        builder.setTitle("Selecciona una tarea")
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        if(which == 0){
-                            //Actividad activity_add_event para añadir evento
-                            Intent intent = new Intent(getApplication(), AddEventActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("day", day);
-                            bundle.putInt("month", month);
-                            bundle.putInt("year", year);
-
-
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-
-                        } else if (which == 1){
-                            //Actividad activity_list para ver eventos
-
-                            Intent intent = new Intent(getApplication(), ListActivity.class);
-
-                            /*
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("day", day);
-                            bundle.putInt("month", month);
-                            bundle.putInt("year", year);
-
-                            intent.putExtras(bundle);*/
-                            startActivity(intent);
-
-                            Log.d("DEBUGOSCAR", "La pantalla si abre");
-                        } else {
-                            return;
-                        }
-                    }
-                });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
     }
 
 
+    //Metodo para cuando se presione el botón + (el de añadir evento nuevo)
+    //Sirve para a la pantalla de Agregar evento nuevo (AddEventActivity.java)
     public void onClickNewEvent(View v){
-        //Actividad activity_add_event para añadir evento
-        Intent intent = new Intent(getApplication(), AddEventActivity.class);
-        Bundle bundle = new Bundle();
+        Intent intent = new Intent(getApplication(), AddEventActivity.class);//Se crea un intent para poder pasar a la siguiente pantalla
+        Bundle bundle = new Bundle();//Probablemente esta linea sea innecesaria
 
-        intent.putExtras(bundle);
-        startActivity(intent);
+        intent.putExtras(bundle);//Probablemente esta linea sea innecesaria
+        startActivity(intent);//Se inicia el intent para pasar a la pantalla de Agregar evento nuevo (AddEventActivity.java)
     }
 
+    //Metodo para cuando se presione el botón LISTA DE EVENTOS (el de ver lista de todos los eventos)
+    //Sirve para a la pantalla de Lista de eventos (ListActivity.java)
     public void onClickListEvents(View v){
-        //Actividad activity_list para ver eventos
-
-        Intent intent = new Intent(getApplication(), ListActivity.class);
-
-                            /*
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("day", day);
-                            bundle.putInt("month", month);
-                            bundle.putInt("year", year);
-
-                            intent.putExtras(bundle);*/
-        startActivity(intent);
+        Intent intent = new Intent(getApplication(), ListActivity.class);//Se crea la intent para poder cambiar de pantalla
+        startActivity(intent);//Se ejecuta la intent para pasar a la pantalla de Lista de eventos (ListActivity.java)
     }
 
 }
