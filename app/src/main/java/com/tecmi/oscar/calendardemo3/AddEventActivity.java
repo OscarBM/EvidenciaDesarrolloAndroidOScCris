@@ -101,10 +101,16 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
             //endTime.set(2018, 10,7, 9, 30);
             //endTime.set(2018, 10,7, 9, 30);
 
+            //PRUEBA INICIO
+
+
+            //PRUEBA FINAL
+
 
             Intent intent = new Intent(Intent.ACTION_INSERT)
                     .setData(CalendarContract.Events.CONTENT_URI)
                     .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                    //.putExtra(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis())
                     .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
                     .putExtra(CalendarContract.Events.TITLE, eventName.getText().toString())
                     .putExtra(CalendarContract.Events.DESCRIPTION, description.getText().toString())

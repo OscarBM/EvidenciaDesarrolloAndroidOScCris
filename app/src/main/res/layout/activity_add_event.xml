@@ -43,11 +43,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:background="@color/mainGreen">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Evento nuevo"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="30dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Titulo"
+                android:text="Titulo:"
                 android:gravity="center"
                 android:textSize="30dp"/>
             <EditText
@@ -66,7 +83,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Ubicación"
+                android:text="Ubicación:"
                 android:gravity="center"
                 android:textSize="30dp"/>
             <EditText
@@ -174,7 +191,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Descripción"/>
+            android:text="Descripción"
+            android:textSize="30dp"/>
 
         <EditText
             android:id="@+id/edtDescription"
