@@ -24,6 +24,7 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
 
     //Declarar botones
     private Button btnAddEvent, btnCancelEvent;
+    private Button btnList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +51,13 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         //Asignar valores a los botones. Aqui se ligan las variables con sus respectivos botones en el archivo xml correspondiente a esta actividad
         btnAddEvent = (Button)findViewById(R.id.btnAddEvent);
         btnCancelEvent = (Button)findViewById(R.id.btnCancelEvent);
+        btnList = (Button)findViewById(R.id.btnList);
 
         //Fijar los listener de los botones. Esto permite que los botones puedan realizar acciones al ser presionados.
         btnAddEvent.setOnClickListener(this);
         btnCancelEvent.setOnClickListener(this);
+        btnList.setOnClickListener(this);
+
 
     }
 
@@ -106,7 +110,12 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
             }
 
 
-        } else {
+        } else if(v.getId() == btnList.getId()){
+            Intent intent = new Intent(getApplication(), ListActivity.class);//Se crea la intent para poder cambiar de pantalla
+            startActivity(intent);//Se ejecuta la intent para pasar a la pantalla de Lista de eventos (ListActivity.java)
+        }
+
+        else {
             //Este else if es para cancelar guardar el evento.
             this.finish();
             return;
