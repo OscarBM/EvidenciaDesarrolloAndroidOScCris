@@ -50,7 +50,6 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         String[] mProjection =
                 {
                         "_id",
-                        CalendarContract.Events.CALENDAR_ID,
                         CalendarContract.Events.TITLE,
                         CalendarContract.Events.EVENT_LOCATION,
                         CalendarContract.Events.DTSTART,
@@ -104,8 +103,6 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
             String description = cur.getString(cur.getColumnIndex(CalendarContract.Events.DESCRIPTION));//Se extrae la descripción del evento
             String sDate = cur.getString(cur.getColumnIndex(CalendarContract.Events.DTSTART));//Se extrae la fecha de inicio del evento.
             //sDate sale en un tipo de String llamado timeStamp, el cual ocupa traducirse a una variable de tipo Date
-            String eventId = cur.getString(cur.getColumnIndex(CalendarContract.Events.CALENDAR_ID));
-
 
             //Se convierte el sDate a una variable de tipo fecha (Date)
             //Revisar si metodo stringToDate realmente se ocupa o si esta de mas
@@ -136,7 +133,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
             //El contenido de cada item del listView lstvEvents serán Strings que contengan la fecha de inicio, titulo y descripción del evento.
             //Aqui se contruye el String que sera contenido de lstvEvents
-            String itemContent = eventId+":"+day+"-"+monthLetter+"  "+title + ": "+description;
+            String itemContent = day+"-"+monthLetter+"  "+title + ": "+description;
 
             //Aqui se añade el item al listView lstvEvents
             myStringArray1.add(itemContent);

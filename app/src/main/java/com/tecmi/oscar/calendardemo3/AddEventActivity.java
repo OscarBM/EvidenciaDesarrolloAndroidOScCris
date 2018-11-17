@@ -91,8 +91,8 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
                     .putExtra(CalendarContract.Events.TITLE, eventName.getText().toString())//Aqui se fija el titulo del evento
                     .putExtra(CalendarContract.Events.DESCRIPTION, description.getText().toString())//Aqui se fija la descripción del evento
                     .putExtra(CalendarContract.Events.EVENT_LOCATION, eventLocation.getText().toString())//Aqui se fija la ubicación del evento
-                    .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
-                    .putExtra(CalendarContract.Events.CALENDAR_ID, 1);
+                    .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                    //.putExtra(CalendarContract.Events.CALENDAR_ID, 1);
                     //.putExtra(CalendarContract.Calendars.CALENDAR_COLOR, Color.GREEN); //Aqui se intento poder modificar el color del evento. PENDIENTE
             startActivity(intent);//Aqui se ejecuta el intent para añadir el evento a la agenda
 
