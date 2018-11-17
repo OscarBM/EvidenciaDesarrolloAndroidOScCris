@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,11 +27,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ListActivity extends AppCompatActivity /*implements View.OnLongClickListener*/{
+public class ListActivity extends AppCompatActivity implements View.OnClickListener /*implements View.OnLongClickListener*/{
 
     ArrayList<String> myStringArray1 =  new ArrayList<String>();//
     public static ArrayAdapter<String> adapter;
-
+    private Button btnNewEvent1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,9 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
         //Se declaran variables
         TextView tvToday = (TextView)findViewById(R.id.tvToday);//El textView que contendra la fecha actual. CAMBIOS PENDIENTES
         ListView lstvEvents = (ListView)findViewById(R.id.lstvEvents);//El listView que contendra la lista de eventos
+        btnNewEvent1 = (Button)findViewById(R.id.btnNewEvent1);
+
+        btnNewEvent1.setOnClickListener(this);
 
         //Este array de Strings permitira hacer consultas de eventos
         String[] mProjection =
@@ -133,15 +138,7 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
         //Aqui el adapter le pasa la lista de eventos completa a lstvEvents
         lstvEvents.setAdapter(adapter);
 
-        //Estas lineas quizas no se ocupen
-        /*
-        Cursor cursor = null;
-        ContentResolver cr = getContentResolver();
-        Uri uri = CalendarContract.Events.CONTENT_URI;
-        String selection = "((" + CalendarContract.Events._ID+" "+" = ?))";
 
-        String[] selectionArgs = new String[] {"0"};
-        */
     }
 
     //Revisar si se ocupa o si esta demas este metodo
@@ -156,6 +153,12 @@ public class ListActivity extends AppCompatActivity /*implements View.OnLongClic
     }
 
 
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(getApplication(), AddEventActivity.class);//Se crea un intent para poder pasar a la siguiente pantalla
+        Bundle bundle = new Bundle();//Probablemente esta linea sea innecesaria
 
-
+        intent.putExtras(bundle);//Probablemente esta linea sea innecesaria
+        startActivity(intent);//Se inicia el intent para pasar a la pantalla de Agregar evento nuevo (AddEventActivity.java)
+    }
 }
