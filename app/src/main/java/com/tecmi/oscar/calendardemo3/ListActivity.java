@@ -45,10 +45,12 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
         btnNewEvent1.setOnClickListener(this);
 
+        //INICIO CREACIÓN LISTA
         //Este array de Strings permitira hacer consultas de eventos
         String[] mProjection =
                 {
                         "_id",
+                        CalendarContract.Events.CALENDAR_ID,
                         CalendarContract.Events.TITLE,
                         CalendarContract.Events.EVENT_LOCATION,
                         CalendarContract.Events.DTSTART,
@@ -76,9 +78,13 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         Cursor cur = null;//El cursor alamcenara la lista de eventos
         ContentResolver cr = getContentResolver();//El content Resolver correra la consulta y obtendra la lista de eventos
         Uri uri = CalendarContract.Events.CONTENT_URI;
+        //String selection = "(" + CalendarContract.Events.OWNER_ACCOUNT +" = ?)";
         String selection = "(" + CalendarContract.Events.OWNER_ACCOUNT +" = ?)";
+
         //ESTA LINEA DE ABAJO ESTA PENDIENTE
+        //String[] selectionArgs = new String[] {"usersample@gmail.com"};//Aqui se fija la cuenta de la cual se quieren revisar eventos.
         String[] selectionArgs = new String[] {"usersample@gmail.com"};//Aqui se fija la cuenta de la cual se quieren revisar eventos.
+
 
         // El cursor almacenara la consulta hecha por el contentResolver
         //selecctionArgs vendrian siendo los filtros. Aqui se encuentra el correo del usuario
@@ -98,6 +104,8 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
             String description = cur.getString(cur.getColumnIndex(CalendarContract.Events.DESCRIPTION));//Se extrae la descripción del evento
             String sDate = cur.getString(cur.getColumnIndex(CalendarContract.Events.DTSTART));//Se extrae la fecha de inicio del evento.
             //sDate sale en un tipo de String llamado timeStamp, el cual ocupa traducirse a una variable de tipo Date
+            String eventId = cur.getString(cur.getColumnIndex(CalendarContract.Events.CALENDAR_ID));
+
 
             //Se convierte el sDate a una variable de tipo fecha (Date)
             //Revisar si metodo stringToDate realmente se ocupa o si esta de mas
@@ -128,7 +136,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
             //El contenido de cada item del listView lstvEvents serán Strings que contengan la fecha de inicio, titulo y descripción del evento.
             //Aqui se contruye el String que sera contenido de lstvEvents
-            String itemContent = day+"-"+monthLetter+"  "+title + ": "+description;
+            String itemContent = eventId+":"+day+"-"+monthLetter+"  "+title + ": "+description;
 
             //Aqui se añade el item al listView lstvEvents
             myStringArray1.add(itemContent);
@@ -137,6 +145,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Aqui el adapter le pasa la lista de eventos completa a lstvEvents
         lstvEvents.setAdapter(adapter);
+        //FIN CREACIÓN LISTA
 
 
     }
@@ -155,6 +164,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        //Esto es para cambiar a la actividad "AddEnventActivity.java"
         Intent intent = new Intent(getApplication(), AddEventActivity.class);//Se crea un intent para poder pasar a la siguiente pantalla
         Bundle bundle = new Bundle();//Probablemente esta linea sea innecesaria
 

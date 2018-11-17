@@ -1,6 +1,8 @@
 package com.tecmi.oscar.calendardemo3;
 
 import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -18,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener {
     //Marvel: https://marvelapp.com/45cj4d9/screen/48608874
@@ -44,6 +47,15 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
         clvMain = (CalendarView)findViewById(R.id.clvMain);
         clvMain.setOnDateChangeListener(this);
 
+
+        //PRUEBA INICIO
+
+
+        TextView tvMainToday = (TextView)findViewById(R.id.tvMainToday);
+        //tvMainToday.setText(getMailId());
+        tvMainToday.setText("que paso");
+        //PRUEBA FIN
+
     }
 
 
@@ -52,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
     public void onSelectedDayChange (CalendarView calendarView, int i, int i1, int i2){
 
     }
+
+
 
 
     //Metodo para cuando se presione el botón + (el de añadir evento nuevo)
