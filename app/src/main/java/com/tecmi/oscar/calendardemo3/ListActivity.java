@@ -82,7 +82,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
         //ESTA LINEA DE ABAJO ESTA PENDIENTE
         //String[] selectionArgs = new String[] {"usersample@gmail.com"};//Aqui se fija la cuenta de la cual se quieren revisar eventos.
-        String[] selectionArgs = new String[] {"usersample@gmail.com"};//Aqui se fija la cuenta de la cual se quieren revisar eventos.
+        String[] selectionArgs = new String[] {"oscarismaelbm98@gmail.com"};//Aqui se fija la cuenta de la cual se quieren revisar eventos.
 
 
         // El cursor almacenara la consulta hecha por el contentResolver
