@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,9 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<String> myStringArray1 =  new ArrayList<String>();//
     public static ArrayAdapter<String> adapter;
     private Button btnNewEvent1;
+    private Button btnSearch3;
+    private Button btnHome4;
+    private EditText edtSearch3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +46,13 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         TextView tvToday = (TextView)findViewById(R.id.tvToday);//El textView que contendra la fecha actual. CAMBIOS PENDIENTES
         ListView lstvEvents = (ListView)findViewById(R.id.lstvEvents);//El listView que contendra la lista de eventos
         btnNewEvent1 = (Button)findViewById(R.id.btnNewEvent1);
+        btnSearch3 = (Button)findViewById(R.id.btnSearch3);
+        btnHome4 = (Button)findViewById(R.id.btnHome4);
+        edtSearch3 = (EditText)findViewById(R.id.edtSearch3);
 
         btnNewEvent1.setOnClickListener(this);
+        btnSearch3.setOnClickListener(this);
+        btnHome4.setOnClickListener(this);
 
         //INICIO CREACIÓN LISTA
         //Este array de Strings permitira hacer consultas de eventos
@@ -161,11 +170,25 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        //Esto es para cambiar a la actividad "AddEnventActivity.java"
-        Intent intent = new Intent(getApplication(), AddEventActivity.class);//Se crea un intent para poder pasar a la siguiente pantalla
-        Bundle bundle = new Bundle();//Probablemente esta linea sea innecesaria
+        if(v.getId() == btnNewEvent1.getId()){
+            //Esto es para cambiar a la actividad "AddEnventActivity.java"
+            Intent intent = new Intent(getApplication(), AddEventActivity.class);//Se crea un intent para poder pasar a la siguiente pantalla
+            Bundle bundle = new Bundle();//Probablemente esta linea sea innecesaria
 
-        intent.putExtras(bundle);//Probablemente esta linea sea innecesaria
-        startActivity(intent);//Se inicia el intent para pasar a la pantalla de Agregar evento nuevo (AddEventActivity.java)
+            intent.putExtras(bundle);//Probablemente esta linea sea innecesaria
+            startActivity(intent);//Se inicia el intent para pasar a la pantalla de Agregar evento nuevo (AddEventActivity.java)
+        } else if (v.getId() == btnSearch3.getId()){
+            try{
+                Intent intent = new Intent(getApplication(),SearchActivity.class);//Se crea la intent para poder cambiar de pantalla
+                MainActivity.searchWord = edtSearch3.getText().toString();//Se obtiene la palabra que esta en la barra de busqueda. Si no hya nada no hay filtro de palabras
+                startActivity(intent);
+            } catch(Exception e){
+                Log.d("SALIOMAL3", e.getMessage());
+            }
+
+        } else if (v.getId() == btnHome4.getId()){
+            Intent intent = new Intent(getApplication(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 }

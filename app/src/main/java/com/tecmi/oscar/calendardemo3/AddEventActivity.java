@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,10 +22,13 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
     //Declarar EditTexts. Estos almacenaran los datos del evento
     private EditText eventName, eventLocation, startDate, endDate, startHour, endHour;
     private EditText description;
+    private EditText search;
 
     //Declarar botones
     private Button btnAddEvent, btnCancelEvent;
     private Button btnList;
+    private Button btnSearch;
+    private Button btnHome3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,8 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         endHour = (EditText)findViewById(R.id.edtEndHour);
         description = (EditText)findViewById(R.id.edtDescription);
 
+        search = (EditText)findViewById(R.id.edtSearch2);
+
         //No estoy seguro si estas lineas al final se ocupen
         Bundle bundle = getIntent().getExtras();
         int day = 0, month = 0, year = 0;
@@ -52,11 +58,15 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         btnAddEvent = (Button)findViewById(R.id.btnAddEvent);
         btnCancelEvent = (Button)findViewById(R.id.btnCancelEvent);
         btnList = (Button)findViewById(R.id.btnList);
+        btnSearch = (Button)findViewById(R.id.btnSearch2);
+        btnHome3 = (Button)findViewById(R.id.btnHome3);
 
         //Fijar los listener de los botones. Esto permite que los botones puedan realizar acciones al ser presionados.
         btnAddEvent.setOnClickListener(this);
         btnCancelEvent.setOnClickListener(this);
         btnList.setOnClickListener(this);
+        btnSearch.setOnClickListener(this);
+        btnHome3.setOnClickListener(this);
 
 
     }
@@ -114,6 +124,17 @@ public class AddEventActivity extends AppCompatActivity implements View.OnClickL
         } else if(v.getId() == btnList.getId()){
             Intent intent = new Intent(getApplication(), ListActivity.class);//Se crea la intent para poder cambiar de pantalla
             startActivity(intent);//Se ejecuta la intent para pasar a la pantalla de Lista de eventos (ListActivity.java)
+        } else if(v.getId() == btnSearch.getId()){
+            try{
+                Intent intent = new Intent(getApplication(),SearchActivity.class);//Se crea la intent para poder cambiar de pantalla
+                MainActivity.searchWord = search.getText().toString();//Se obtiene la palabra que esta en la barra de busqueda. Si no hya nada no hay filtro de palabras
+                startActivity(intent);
+            } catch(Exception e){
+                Log.d("SALIOMAL31", e.getMessage());
+            }
+        } else if (v.getId() == btnHome3.getId()){
+            Intent intent = new Intent(getApplication(), MainActivity.class);
+            startActivity(intent);
         }
 
         else {
